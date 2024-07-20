@@ -54,6 +54,7 @@ app.use("/posts", postRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;
+mongoose.set("strictQuery", false);
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -67,3 +68,11 @@ mongoose
     // Post.insertMany(posts);
   })
   .catch((error) => console.log(`${error} did not connect`));
+
+const __dirname1 = path.resolve();
+
+app.use(express.static(path.join(__dirname1, "../client/build")));
+
+app.get("*", (req, res) =>
+  res.sendFile(path.resolve(__dirname1, "client", "build", "index.html"))
+);
